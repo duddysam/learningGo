@@ -42,6 +42,24 @@ func nameValidator(name string) (bool, error) {
 	return true, nil
 }
 
+func filterTxns(txnAmounts []float64, threshold float64) ([]float64, int) {
+
+	out := make([]float64, 0, len(txnAmounts))
+	removed := 0
+
+	for _, v := range txnAmounts {
+
+		if v > threshold {
+			out = append(out, v)
+		} else {
+			removed++
+		}
+	}
+
+	return out, removed
+
+}
+
 func main() {
 
 	// TEST PROBLEM 1
@@ -67,4 +85,11 @@ func main() {
 
 	valid, err = nameValidator("Sam Duddy$s")
 	fmt.Println("false ==", valid, err)
+
+	// PROBLEM 3
+	txns := []float64{100.00, 101.00, 400.00, 99.00, 73.00, 62.00}
+
+	filteredTxns, removed := filterTxns(txns, 75.00)
+	fmt.Println(filteredTxns, removed)
+
 }
