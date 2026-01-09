@@ -3,6 +3,7 @@ package main
 import (
 	"errors"
 	"fmt"
+	"sort"
 	"unicode"
 )
 
@@ -60,6 +61,41 @@ func filterTxns(txnAmounts []float64, threshold float64) ([]float64, int) {
 
 }
 
+func topNMerchants(merchants []string, N int) []string {
+	// standard approach to sorting a map:
+	// 1. Count frequency (using map)
+	// 2. Extract data into sortable structure (struct)
+	// 3. Sort (using sort.Slice with comparison function)
+	// 4. Return top N
+	nameMap := map[string]int{}
+
+	for _, v := range merchants {
+		nameMap[v]++
+	}
+
+	type merchantCount struct {
+		name  string
+		count int
+	}
+
+	structCount := make([]merchantCount, 0, len(nameMap))
+	for name, count := range nameMap {
+		structCount = append(structCount, merchantCount{name: name, count: count})
+	}
+
+	sort.Slice(structCount, func(i, j int) bool {
+		return structCount[i].count > structCount[j].count
+	})
+
+	out := make([]string, 0, N)
+	for i := 0; i < N && i < len(structCount); i++ {
+		out = append(out, structCount[i].name)
+	}
+
+	return out
+
+}
+
 func main() {
 
 	// TEST PROBLEM 1
@@ -91,5 +127,14 @@ func main() {
 
 	filteredTxns, removed := filterTxns(txns, 75.00)
 	fmt.Println(filteredTxns, removed)
+
+	// PROBLEM 4
+	merchants := []string{
+		"Starbucks", "Shell", "Starbucks", "Walmart",
+		"Shell", "Starbucks", "Target", "Shell", "Walmart",
+	}
+
+	top3 := topNMerchants(merchants, 3)
+	fmt.Println(top3)
 
 }
