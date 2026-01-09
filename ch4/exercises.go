@@ -140,6 +140,36 @@ func processTxns(txns []string) int {
 	return processed
 }
 
+func summarizeTxns(txns []float64) (float64, float64, float64, float64, int) {
+
+	if len(txns) == 0 {
+		return 0, 0, 0, 0, 0
+	}
+
+	sum := 0.0
+	var minVal float64
+	var maxVal float64
+	bigTxns := 0
+
+	for i, txn := range txns {
+		sum += txn
+		if i == 0 || txn < minVal {
+			minVal = txn
+		}
+		if i == 0 || txn > maxVal {
+			maxVal = txn
+		}
+		if txn > 100 {
+			bigTxns++
+		}
+
+	}
+
+	var avg float64 = sum / float64(len(txns))
+	return sum, avg, maxVal, minVal, bigTxns
+
+}
+
 func main() {
 
 	// TEST PROBLEM 1
