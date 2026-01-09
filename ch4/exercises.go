@@ -96,6 +96,15 @@ func topNMerchants(merchants []string, N int) []string {
 
 }
 
+func getCategory(merchantName string, merchantMap map[string]string) string {
+
+	if category, ok := merchantMap[merchantName]; ok {
+		return category
+	}
+	return "Uncategorized"
+
+}
+
 func main() {
 
 	// TEST PROBLEM 1
