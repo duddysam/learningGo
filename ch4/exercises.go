@@ -105,6 +105,41 @@ func getCategory(merchantName string, merchantMap map[string]string) string {
 
 }
 
+func getPaymentStatus(statusCode int) string {
+	switch statusCode {
+	case 100:
+		return "Pending"
+	case 200:
+		return "Approved"
+	case 300:
+		return "Declined"
+	case 400:
+		return "Error"
+	case 500:
+		return "Refunded"
+	default:
+		return "Invalid Code"
+	}
+
+}
+
+func processTxns(txns []string) int {
+
+	processed := 0
+	for _, id := range txns {
+		if len(id) < 10 {
+			continue
+		}
+		if id[0:4] == "TEST" {
+			break
+		}
+		// do stuff to process txn
+		processed++
+	}
+
+	return processed
+}
+
 func main() {
 
 	// TEST PROBLEM 1
@@ -145,5 +180,17 @@ func main() {
 
 	top3 := topNMerchants(merchants, 3)
 	fmt.Println(top3)
+
+	// PROBLEM 8
+	txnIds := []string{
+		"TXN1234567890", // Valid - should process
+		"",              // Empty - should skip
+		"TXN9876543210", // Valid - should process
+		"SHORT123",      // Only 9 chars - should continue past
+		"TXN5555555555", // Valid - should process
+	}
+
+	processed := processTxns(txnIds)
+	fmt.Println(processed)
 
 }
