@@ -170,6 +170,23 @@ func summarizeTxns(txns []float64) (float64, float64, float64, float64, int) {
 
 }
 
+func getDuplicateTxns(txnIDs []string) []string {
+
+	txnMap := map[string]int{}
+	out := []string{}
+
+	for _, txn := range txnIDs {
+		txnMap[txn]++
+
+		if txnMap[txn] == 2 {
+			out = append(out, txn)
+		}
+
+	}
+
+	return out
+}
+
 func main() {
 
 	// TEST PROBLEM 1
@@ -222,5 +239,27 @@ func main() {
 
 	processed := processTxns(txnIds)
 	fmt.Println(processed)
+
+	// PROBLEM 10
+	txnIDs := []string{
+		"TXN001",
+		"TXN002",
+		"TXN001", // Duplicate
+		"TXN003",
+		"TXN002", // Duplicate
+	}
+
+	out := getDuplicateTxns(txnIDs)
+	fmt.Println(out)
+
+	txnIDs = []string{
+		"TXN001",
+		"TXN002",
+		"TXN003",
+		"TXN004",
+	}
+
+	out = getDuplicateTxns(txnIDs)
+	fmt.Println(out)
 
 }
