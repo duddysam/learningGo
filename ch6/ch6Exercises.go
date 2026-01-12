@@ -26,4 +26,17 @@ func main() {
 
 	// PROBLEM 2
 	convertCentToDollar(1050)
+
+	// PROBLEM 3
+	dailyTxns := []float64{45.99, 123.50, 8.75}
+	dailyTxns = append(dailyTxns, 200.10, 15.30)
+	sumTxns := 0.00
+	numTxns := 0
+
+	for _, txn := range dailyTxns {
+		sumTxns += txn
+		numTxns++
+	}
+
+	fmt.Println(sumTxns, numTxns)
 }
